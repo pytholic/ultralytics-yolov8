@@ -270,37 +270,6 @@ class BasePredictor:
             self.run_callbacks("on_predict_batch_end")
 
             return result
-        #     yield from self.results
-
-        #     # Print time (inference-only)
-        #     if self.args.verbose:
-        #         LOGGER.info(f"{s}{self.dt[1].dt * 1E3:.1f}ms")
-
-        # # Release assets
-        # if isinstance(self.vid_writer[-1], cv2.VideoWriter):
-        #     self.vid_writer[-1].release()  # release final video writer
-
-        # # Print results
-        # if self.args.verbose and self.seen:
-        #     t = tuple(x.t / self.seen * 1e3 for x in self.dt)  # speeds per image
-        #     LOGGER.info(
-        #         f"Speed: %.1fms preprocess, %.1fms inference, %.1fms postprocess per image at shape "
-        #         f"{(1, 3, *self.imgsz)}" % t
-        #     )
-        # if self.args.save or self.args.save_txt or self.args.save_crop:
-        #     nl = len(list(self.save_dir.glob("labels/*.txt")))  # number of labels
-        #     s = (
-        #         f"\n{nl} label{'s' * (nl > 1)} saved to {self.save_dir / 'labels'}"
-        #         if self.args.save_txt
-        #         else ""
-        #     )
-        #     LOGGER.info(f"Results saved to {colorstr('bold', self.save_dir)}{s}")
-
-        # self.run_callbacks("on_predict_end")
-
-        # res = self.annotator.result()
-        # return
-        # print(res)
 
     def setup_model(self, model, verbose=True):
         device = select_device(self.args.device, verbose=verbose)
@@ -330,29 +299,6 @@ class BasePredictor:
 
     def save_preds(self, vid_cap, idx, save_path):
         im0 = self.annotator.result()
-        # save imgs
-        # if self.dataset.mode == "image":
-        #     cv2.imwrite(save_path, im0)
-        # else:  # 'video' or 'stream'
-        #     if self.vid_path[idx] != save_path:  # new video
-        #         self.vid_path[idx] = save_path
-        #         if isinstance(self.vid_writer[idx], cv2.VideoWriter):
-        #             self.vid_writer[idx].release()  # release previous video writer
-        #         if vid_cap:  # video
-        #             fps = int(
-        #                 vid_cap.get(cv2.CAP_PROP_FPS)
-        #             )  # integer required, floats produce error in MP4 codec
-        #             w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        #             h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        #         else:  # stream
-        #             fps, w, h = 30, im0.shape[1], im0.shape[0]
-        #         save_path = str(
-        #             Path(save_path).with_suffix(".mp4")
-        #         )  # force *.mp4 suffix on results videos
-        #         self.vid_writer[idx] = cv2.VideoWriter(
-        #             save_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h)
-        #         )
-        # self.vid_writer[idx].write(im0)
         return im0
 
     def run_callbacks(self, event: str):
